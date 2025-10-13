@@ -7,8 +7,6 @@ function Figure2
   %
   % License: MIT
 
-  clear, close all
-
   % define units and constants
   mm = 1e-3;
 
@@ -66,10 +64,13 @@ function Figure2
   legend
 
   %% Figure 2c-d: plot values of a guaranteeing asymptotic convergence, plot convergence limit value
-  clear
+  clearvars
 
   % load values from pre-computed database
-  load('a_values.mat')
+  baseDir = fileparts(mfilename('fullpath'));
+  rootDir = fileparts(baseDir);
+  dataDir = fullfile(rootDir, 'data');
+  load(fullfile(dataDir, 'a_values.mat'));
 
   % precompute the grids
   [G, MUA] = meshgrid(g_vals, log10(mua_vals/mus_reduced));

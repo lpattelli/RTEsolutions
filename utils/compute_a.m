@@ -41,8 +41,13 @@ function [best_a_matrix, avg_ratio_matrix] = compute_a
   end
   fprintf('\n'); % clear console
 
-  % save raw output
-  save('a_values.mat', 'mm', 'r', 'mua_vals', 'mus_reduced', 'g_vals', 'best_a_matrix', 'avg_ratio_matrix');
+  % save raw output to the data/ folder
+  baseDir = fileparts(mfilename('fullpath'));  % utils/
+  rootDir = fileparts(baseDir);
+  dataDir = fullfile(rootDir, 'data');
+
+  save(fullfile(dataDir, 'a_values.mat'), ...
+    'mm', 'r', 'mua_vals', 'mus_reduced', 'g_vals', 'best_a_matrix', 'avg_ratio_matrix');
 end
 
 function [score, avg_ratio] = convergence_metric(a, r, mua, mus, g, Npoints)

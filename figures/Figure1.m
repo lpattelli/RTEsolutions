@@ -7,8 +7,6 @@ function Figure1
   %
   % License: MIT
 
-  clear, close all
-
   % define units and constants
   mm = 1e-3;
   ps = 1e-12;
