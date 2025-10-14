@@ -46,7 +46,7 @@ function [best_a_matrix, avg_ratio_matrix] = compute_a
   rootDir = fileparts(baseDir);
   dataDir = fullfile(rootDir, 'data');
 
-  save(fullfile(dataDir, 'a_values.mat'), ...
+  save('-v7', fullfile(dataDir, 'a_values_matlab.mat'), ...
     'mm', 'r', 'mua_vals', 'mus_reduced', 'g_vals', 'best_a_matrix', 'avg_ratio_matrix');
 end
 
