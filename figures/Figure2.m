@@ -78,7 +78,6 @@ function Figure2
   Z2 = avg_ratio_matrix.';
 
   figure
-  title('Figure 2c-d: convergence parameter and convergence value')
 
   for panel = 1:2
     subplot(1,2,panel)
@@ -133,5 +132,7 @@ function Figure2
 
   clim = caxis;  % grab per-panel color limits
   cmap = colormap;
+
+  S = axes('visible', 'off', 'title', 'Figure 2c-d: convergence parameter and convergence value')
 end
 
