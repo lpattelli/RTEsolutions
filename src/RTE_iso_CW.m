@@ -22,7 +22,8 @@ function out = RTE_iso_CW(r, mus, mua)
 
   for u = 1:numel(out) % the loop could be removed using arrayfun?
     if mua == 0
-      T1 = 1/(4*pi*D1*r(u));   % Poisson-like solution
+      D = (1/3)/mus;
+      T1 = 1/(4*pi*D*r(u));   % Poisson-like solution
     else
       T1 = mut^3*L^2*(1-L^2)/(mut*L^2-mua)*exp(-mut*L*r(u))/(2*pi*mus*r(u));
     end
