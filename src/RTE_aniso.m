@@ -1,51 +1,53 @@
-function out = RTE_aniso(t, r, mus, mua, g, v, N, Nk, R_s_mult)
-% RTE_aniso
-%   Compute the time-dependent fluence in an infinite homogeneous medium
-%   using the PN approximation to the radiative transfer equation with
-%   Henyey–Greenstein anisotropic scattering.
+function fluence = RTE_aniso(t, r, mua, mus, g, v, N, Nk, R_s_mult)
+% RTE_ANISO - Time‑domain fluence via PN approximation with HG anisotropy
 %
-% Inputs
-%   t           [1×T double]   Time array at which to evaluate fluence
-%   r           [1×1 double]   Source–detector separation
-%   mus         [1×1 double]   Scattering coefficient
-%   mua         [1×1 double]   Absorption coefficient
-%   g           [1×1 double]   HG asymmetry factor
-%   v           [1×1 double]   Speed of light in the medium
-%   N           [1×1 int]      PN expansion order (optional; default = 151)
-%   Nk          [1×1 int]      Number of wave numbers (optional; default = 500)
-%   R_s_mult    [1×1 double]   Sphere radius multiplier (optional; default = 100)
+% Syntax:
+%   fluence = RTE_aniso(t, r, mua, mus, g, v)
+%   fluence = RTE_aniso(t, r, mua, mus, g, v, N, Nk, R_s_mult)
 %
-% Output
-%   out         [1×T double]   Time-dependent fluence
+% Inputs:
+%   t         [1xT double, time]           Time points
+%   r         [1x1 double, length]         Source-detector distance
+%   mua       [1x1 double, length^-1]      Absorption coefficient
+%   mus       [1x1 double, length^-1]      Scattering coefficient
+%   g         [1x1 double, -]              HG anisotropy factor
+%   v         [1x1 double, length time^-1] Speed of light in medium
+%   N         [1x1 int]                    PN order (default 151)
+%   Nk        [1x1 int]                    Number of wave numbers (default 500)
+%   R_s_mult  [1x1 double]                 Sphere radius multiplier (default 100)
+%
+% Outputs:
+%   fluence   [1xT double, time^-1 length^-2]  Fluence
 
-  % set default arguments
   if nargin < 9, R_s_mult = 100; end
-  if nargin < 8, Nk = 500; end
-  if nargin < 7, N = 151; end
+  if nargin < 8, Nk       = 500; end
+  if nargin < 7, N        = 151; end
 
-  % Henyey–Greenstein phase function
   R_s   = R_s_mult * r;
   l     = (0:N).';
-  sigma = mua + (1 - g.^l) * mus;       % (N+1×1)
+  sigma = mua + (1 - g.^l) * mus;       % (N+1x1)
 
   for k = Nk:-1:1
-    ek          = (k * pi)/R_s;
-    od          = 1i*ek*(1:N)./sqrt((1:2:2*N-1).*(3:2:2*N+1));
-    A           = diag(od, +1) + diag(sigma) + diag(od, -1);
-    [V,D]       = eig(A);
-    b           = V \ eye(N+1,1);
-    eig_k(:,k)  = diag(D);               % N+1 × Nk
-    Res(:,k)    = ek * sin(r*ek) * (V(1,:).*b.').';  % N+1 × Nk
+    ek = (k * pi)/R_s;
+
+    % super/sub-diagonals (size N) and main diagonal sigma (size N+1)
+    od = 1i*ek*(1:N) ./ sqrt((1:2:2*N-1).*(3:2:2*N+1));
+    A  = diag(od, +1) + diag(sigma) + diag(od, -1);
+
+    [V, Dm] = eig(A);
+    b       = V \ eye(N+1,1);
+    eig_k(:,k) = diag(Dm);                               % N+1 x Nk
+    Res(:,k)   = ek * sin(r*ek) * (V(1,:).*b.').';       % N+1 x Nk
   end
 
-  ev = eig_k(:);     % (N+1)*Nk × 1
+  ev = eig_k(:);     % (N+1)*Nk x 1
   rv = Res(:);       % same size
 
-  E     = exp(- (ev*v) * t(:)' );        % (N+1)*Nk × T
-  sumE  = real(rv.' * E);                % 1×T
-  out   = sumE * v/(pi*r*R_s) / 2;       % 1×T
+  E        = exp(-(ev*v) * t(:)');   % (N+1)*Nk x T
+  sumE     = real(rv.' * E);         % 1xT
+  fluence  = sumE * v/(pi*r*R_s) / 2;
 
-  % zero‐out pre-ballistic times
-  out(t < r/v) = 0;
+  % zero out pre-ballistic times
+  fluence(t < r/v) = 0;
 end
 
