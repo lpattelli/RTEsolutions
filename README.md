@@ -1,4 +1,4 @@
-# asymptoticRTE
+# RTEsolutions
 
 Reference implementations for photon fluence in an infinite, homogeneous medium using the Radiative Transfer Equation (RTE) and the Diffusion Equation (DE). Includes both time-domain and continuous-wave (CW) regimes, with utilities to study asymptotic behavior and to test different expressions of the diffusion coefficient found in the literature.
 
