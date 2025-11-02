@@ -19,7 +19,7 @@ Running `setup.m` from the repo root adds all relevant folders to the path and g
 
 ## Quickstart
 
-Plot the ratio between the RTE and the DE for anisotropic scattering ($g=0$)
+Plot the ratio between the RTE and the DE for anisotropic scattering ($g=0.9$)
 
 ``` matlab
 % time-domain convergence of the RTE fluence for g = 0.9 and the DE fluence
