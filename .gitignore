@@ -5,6 +5,10 @@
 *.slx.r*
 *.mdl.r*
 
+# Misc output
+misc/
+output/
+
 # Derived content-obscured files
 *.p
 

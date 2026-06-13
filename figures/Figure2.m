@@ -112,7 +112,7 @@ function Figure2
       colorIdx = round(1 + t * (nColors - 1));
       lineColor = cmap(colorIdx, :);
 
-      plot3(xs, ys, zeros(1,npts), '-', 'LineWidth', 1.2)
+      plot3(xs, ys, zeros(1,npts), '-', 'LineWidth', 1.2, 'Color', lineColor)
       idx = idx + npts + 1;
     end
     view(60,30)
