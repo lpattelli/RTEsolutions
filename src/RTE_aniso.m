@@ -1,5 +1,5 @@
 function fluence = RTE_aniso(t, r, mua, mus, g, v, N, Nk, R_s_mult)
-% RTE_ANISO - Time‑domain fluence via PN approximation with HG anisotropy
+% RTE_ANISO - Time-domain fluence via PN approximation with HG anisotropy
 %
 % Syntax:
 %   fluence = RTE_aniso(t, r, mua, mus, g, v)
@@ -26,28 +26,27 @@ function fluence = RTE_aniso(t, r, mua, mus, g, v, N, Nk, R_s_mult)
   R_s   = R_s_mult * r;
   l     = (0:N).';
   sigma = mua + (1 - g.^l) * mus;       % (N+1x1)
+  eig_k = zeros(N+1, Nk);
+  Res   = zeros(N+1, Nk);
 
   for k = Nk:-1:1
-    ek = (k * pi)/R_s;
-
-    % super/sub-diagonals (size N) and main diagonal sigma (size N+1)
-    od = 1i*ek*(1:N) ./ sqrt((1:2:2*N-1).*(3:2:2*N+1));
+    ek = (k*pi) / R_s;
+    od = 1i*ek*(1:N) ./ sqrt((1:2:2*N-1) .* (3:2:2*N+1));
     A  = diag(od, +1) + diag(sigma) + diag(od, -1);
 
     [V, Dm] = eig(A);
-    b       = V \ eye(N+1,1);
-    eig_k(:,k) = diag(Dm);                               % N+1 x Nk
-    Res(:,k)   = ek * sin(r*ek) * (V(1,:).*b.').';       % N+1 x Nk
+    b = V \ eye(N+1, 1);
+    eig_k(:, k) = diag(Dm);                           % N+1 x Nk
+    Res(:, k) = ek * sin(r*ek) * (V(1,:) .* b.').';   % N+1 x Nk
   end
 
   ev = eig_k(:);     % (N+1)*Nk x 1
-  rv = Res(:);       % same size
+  rv = Res(:);       % (N+1)*Nk x 1
 
-  E        = exp(-(ev*v) * t(:)');   % (N+1)*Nk x T
-  sumE     = real(rv.' * E);         % 1xT
-  fluence  = sumE * v/(pi*r*R_s) / 2;
+  E       = exp(-(ev*v) * t(:)');   % (N+1)*Nk x T
+  sumE    = real(rv.' * E);         % 1 x T
+  fluence = sumE * v/(pi*r*R_s) / 2;
 
   % zero out pre-ballistic times
   fluence(t < r/v) = 0;
 end
-

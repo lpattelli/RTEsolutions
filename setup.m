@@ -1,27 +1,31 @@
 % setup.m
 %
 % Description:
-%   Setup script adding necessary folders to the path and (optionally) generates figures
+%   Add RTEsolutions source folders to the Octave/MATLAB path.
 %
-% Authors: André Liemert (ILM-ULM)
+% Authors: Andre Liemert (ILM-ULM)
 %          Lorenzo Pattelli (INRIM)
 %          Fabrizio Martelli (UNIFI)
 %
 % License: MIT
 
-% Add directories to the path
-addpath(genpath(fullfile(pwd, 'src')));
-addpath(genpath(fullfile(pwd, 'utils')));
-addpath(genpath(fullfile(pwd, 'data')));
-addpath(genpath(fullfile(pwd, 'figures')));
+rootDir = fileparts(mfilename('fullpath'));
 
-fprintf('Paths added:\n  %s\n  %s\n  %s\n  %s\n', ...
-  fullfile(pwd,'src'), fullfile(pwd,'utils'), fullfile(pwd,'data'), fullfile(pwd,'figures'));
+addpath(genpath(fullfile(rootDir, 'src')));
+addpath(genpath(fullfile(rootDir, 'utils')));
+addpath(genpath(fullfile(rootDir, 'figures')));
 
-% Optional: plot all figures
-RUN_FIGURES = true;  % set false to skip plotting when setting up
+fprintf('RTEsolutions paths added:\n');
+fprintf('  %s\n', fullfile(rootDir, 'src'));
+fprintf('  %s\n', fullfile(rootDir, 'utils'));
+fprintf('  %s\n', fullfile(rootDir, 'figures'));
+
+% Set this to true to generate all production figure windows after setup.
+RUN_FIGURES = false;
+
 if RUN_FIGURES
-  disp('Generating Figure 1'); Figure1;
-  disp('Generating Figure 2'); Figure2;
+  Figure1;
+  Figure2;
+  Figure3;
+  Figure4;
 end
-

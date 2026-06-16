@@ -5,7 +5,7 @@ function fluence = DE_CW(r, D, mua)
 %   fluence = DE_CW(r, D, mua)
 %
 % Inputs:
-%   r   [1xR double, length]         Source–detector distance(s)
+%   r   [1xR double, length]         Source-detector distance(s)
 %   D   [1x1 double, length]         Diffusion coefficient
 %   mua [1x1 double, length^-1]      Absorption coefficient
 %

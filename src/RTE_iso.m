@@ -1,5 +1,5 @@
 function fluence = RTE_iso(t, r, mua, mus, v)
-% RTE_ISO - Time‑domain fluence from the RTE with isotropic scattering
+% RTE_ISO - Time-domain fluence from the RTE with isotropic scattering
 %
 % Syntax:
 %   fluence = RTE_iso(t, r, mua, mus, v)
